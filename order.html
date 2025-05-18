@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Phone</title>
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; text-align: center; padding: 30px; background: #f0f0f0; }
+    form { background: white; max-width: 400px; margin: auto; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    input, button { padding: 10px; margin: 10px 0; width: 100%; font-size: 16px; }
+    h2 { margin-bottom: 10px; }
+  </style>
+</head>
+<body>
+  <h2>Order Phone</h2>
+  <form onsubmit="return submitOrder()">
+    <input type="text" id="name" placeholder="Your Name" required />
+    <input type="text" id="product" placeholder="Phone Model" required />
+    <button type="submit">Submit Order</button>
+  </form>
+  <script>
+    window.onload = () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const product = urlParams.get('product');
+      if (product) document.getElementById('product').value = product;
+    }
+
+    function submitOrder() {
+      const name = document.getElementById("name").value.trim();
+      const product = document.getElementById("product").value.trim();
+      if (!name || !product) return false;
+
+      const orders = JSON.parse(localStorage.getItem("orders") || "[]");
+      orders.push({ name, product, time: new Date().toLocaleString() });
+      localStorage.setItem("orders", JSON.stringify(orders));
+      alert("Order placed successfully!");
+      return false;
+    }
+  </script>
+</body>
+</html>
